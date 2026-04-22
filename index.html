@@ -443,48 +443,140 @@
   }
   .footer strong { color: var(--text-muted); }
 
-  /* ── Edit Mode ── */
-  .edit-toolbar {
+  /* ══════════════════════════════════════
+     悬浮工具球 (FAB) 样式
+     ══════════════════════════════════════ */
+  .fab-wrapper {
     position: fixed;
-    top: 16px;
-    right: 16px;
+    bottom: 28px;
+    right: 28px;
     z-index: 1000;
     display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .edit-toolbar button {
-    display: inline-flex;
+    flex-direction: column-reverse;
     align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
+    gap: 0;
+  }
+
+  /* 主悬浮球 */
+  .fab-main {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563EB, #3B82F6);
+    color: #fff;
     border: none;
     cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+    z-index: 10;
+    position: relative;
   }
-  .btn-edit {
-    background: var(--white);
-    color: var(--primary);
-    border: 1px solid var(--border) !important;
+  .fab-main:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.45);
   }
-  .btn-edit:hover { background: var(--primary-ultra-light); }
-  .btn-edit.active {
-    background: var(--primary);
+  .fab-main.open {
+    transform: rotate(45deg);
+    background: linear-gradient(135deg, #EF4444, #F87171);
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35);
+  }
+  .fab-main.open:hover {
+    transform: rotate(45deg) scale(1.08);
+  }
+  .fab-main svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.3s;
+  }
+
+  /* 菜单项容器 */
+  .fab-menu {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+    transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .fab-menu.show {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* 每个菜单项 */
+  .fab-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: row-reverse;
+    white-space: nowrap;
+  }
+  .fab-item button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .fab-item button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  }
+  .fab-item button svg {
+    width: 18px;
+    height: 18px;
+  }
+  .fab-item .fab-label {
+    background: var(--text);
     color: #fff;
-    border-color: var(--primary) !important;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    font-family: inherit;
+    opacity: 0;
+    transform: translateX(8px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
   }
-  .btn-export {
-    background: var(--white);
-    color: var(--text-muted);
-    border: 1px solid var(--border) !important;
+  .fab-menu.show .fab-item .fab-label {
+    opacity: 1;
+    transform: translateX(0);
   }
-  .btn-export:hover { background: var(--bg); }
+  .fab-menu.show .fab-item:nth-child(1) .fab-label { transition-delay: 0.05s; }
+  .fab-menu.show .fab-item:nth-child(2) .fab-label { transition-delay: 0.1s; }
+  .fab-menu.show .fab-item:nth-child(3) .fab-label { transition-delay: 0.15s; }
+  .fab-menu.show .fab-item:nth-child(4) .fab-label { transition-delay: 0.2s; }
+
+  .fab-btn-edit { background: var(--white); color: var(--primary); border: 2px solid var(--primary) !important; }
+  .fab-btn-edit.active { background: var(--primary); color: #fff; }
+  .fab-btn-save { background: var(--success); color: #fff; }
+  .fab-btn-export { background: var(--white); color: var(--text-muted); border: 1px solid var(--border) !important; }
+  .fab-btn-print { background: var(--white); color: var(--text-muted); border: 1px solid var(--border) !important; }
+
+  /* 遮罩层 */
+  .fab-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: none;
+  }
+  .fab-overlay.show {
+    display: block;
+  }
 
   /* Editable highlight */
   body.editing [contenteditable="true"] {
@@ -584,14 +676,6 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* ── Print button ── */
-  .btn-print {
-    background: var(--white);
-    color: var(--text-muted);
-    border: 1px solid var(--border) !important;
-  }
-  .btn-print:hover { background: var(--bg); }
-
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .overview { grid-template-columns: 1fr; }
@@ -604,6 +688,7 @@
     .em-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; }
     .daily-bar { flex-direction: column; height: auto; }
     .daily-seg { padding: 8px; flex-direction: row; gap: 8px; }
+    .fab-wrapper { bottom: 20px; right: 20px; }
   }
 
   /* ══════════════════════════════════════════
@@ -615,14 +700,11 @@
   }
 
   @media print {
-    /* Force color printing */
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
       color-adjust: exact !important;
     }
-
-    /* Reset body for print */
     html, body {
       width: 210mm;
       margin: 0 !important;
@@ -630,123 +712,53 @@
       background: #fff !important;
       font-size: 11px !important;
       line-height: 1.5 !important;
-      -webkit-font-smoothing: subpixel-antialiased;
     }
-
-    /* Hide interactive elements */
-    .edit-toolbar,
+    .fab-wrapper,
+    .fab-overlay,
     .toast,
     .add-step-btn,
     .row-actions,
     .row-actions-col {
       display: none !important;
     }
-
-    /* Remove hover/shadow effects */
     .overview-card,
     .step-card {
       box-shadow: none !important;
       transform: none !important;
     }
-    .step-card:hover {
-      transform: none !important;
-      box-shadow: none !important;
-    }
+    .step-card:hover,
     .overview-card:hover {
       transform: none !important;
       box-shadow: none !important;
     }
-
-    /* Hero — compact for print, keep color */
     .hero {
       padding: 28px 20px 24px !important;
       background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #3B82F6 100%) !important;
     }
     .hero::before { display: none !important; }
-    .hero h1 {
-      font-size: 22px !important;
-      margin-bottom: 6px !important;
-    }
-    .hero p {
-      font-size: 12px !important;
-    }
-    .hero-badge {
-      font-size: 11px !important;
-      padding: 4px 12px !important;
-      margin-bottom: 12px !important;
-    }
-
-    /* Container — full width for A4 */
-    .container {
-      max-width: 100% !important;
-      padding: 0 !important;
-    }
-
-    /* Overview cards — tighter */
-    .overview {
-      margin: -18px 0 20px !important;
-      gap: 10px !important;
-    }
-    .overview-card {
-      padding: 14px !important;
-      border-radius: 8px !important;
-    }
-    .overview-icon {
-      width: 32px !important;
-      height: 32px !important;
-      border-radius: 8px !important;
-      margin-bottom: 6px !important;
-    }
-    .overview-icon svg {
-      width: 16px !important;
-      height: 16px !important;
-    }
-    .overview-card h3 {
-      font-size: 10px !important;
-      margin-bottom: 2px !important;
-    }
-    .overview-card .value {
-      font-size: 16px !important;
-    }
-
-    /* Section titles — tighter */
-    .section-title {
-      margin: 20px 0 12px !important;
-    }
-    .section-title span {
-      font-size: 11px !important;
-    }
-
-    /* Daily bar — compact */
-    .daily-bar {
-      height: 40px !important;
-      margin-top: 8px !important;
-      border-radius: 8px !important;
-    }
-    .daily-seg {
-      font-size: 9px !important;
-    }
-    .daily-seg .seg-label {
-      font-size: 8px !important;
-    }
-
-    /* Timeline — prevent breaks */
-    .timeline::before {
-      width: 2px !important;
-      left: 20px !important;
-    }
+    .hero h1 { font-size: 22px !important; margin-bottom: 6px !important; }
+    .hero p { font-size: 12px !important; }
+    .hero-badge { font-size: 11px !important; padding: 4px 12px !important; margin-bottom: 12px !important; }
+    .container { max-width: 100% !important; padding: 0 !important; }
+    .overview { margin: -18px 0 20px !important; gap: 10px !important; }
+    .overview-card { padding: 14px !important; border-radius: 8px !important; }
+    .overview-icon { width: 32px !important; height: 32px !important; border-radius: 8px !important; margin-bottom: 6px !important; }
+    .overview-icon svg { width: 16px !important; height: 16px !important; }
+    .overview-card h3 { font-size: 10px !important; margin-bottom: 2px !important; }
+    .overview-card .value { font-size: 16px !important; }
+    .section-title { margin: 20px 0 12px !important; }
+    .section-title span { font-size: 11px !important; }
+    .daily-bar { height: 40px !important; margin-top: 8px !important; border-radius: 8px !important; }
+    .daily-seg { font-size: 9px !important; }
+    .daily-seg .seg-label { font-size: 8px !important; }
+    .timeline::before { width: 2px !important; left: 20px !important; }
     .step {
       padding-left: 52px !important;
       padding-bottom: 16px !important;
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
-    .step-number {
-      left: 4px !important;
-      width: 32px !important;
-      height: 32px !important;
-      font-size: 13px !important;
-    }
+    .step-number { left: 4px !important; width: 32px !important; height: 32px !important; font-size: 13px !important; }
     .step-card {
       padding: 16px 18px !important;
       border-radius: 8px !important;
@@ -754,138 +766,75 @@
       break-inside: avoid !important;
       page-break-inside: avoid !important;
     }
-    .step-header {
-      margin-bottom: 8px !important;
-    }
-    .step-time {
-      font-size: 10px !important;
-      padding: 2px 8px !important;
-    }
-    .step-title {
-      font-size: 14px !important;
-    }
-    .step-desc {
-      font-size: 11px !important;
-      margin-bottom: 10px !important;
-      line-height: 1.5 !important;
-    }
-
-    /* Detail items & checklist — compact */
-    .detail-grid {
-      gap: 6px !important;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
-    }
-    .detail-item {
-      padding: 6px 10px !important;
-      font-size: 11px !important;
-      border-radius: 6px !important;
-    }
-    .detail-item svg {
-      width: 12px !important;
-      height: 12px !important;
-    }
-    .checklist {
-      gap: 4px !important;
-    }
-    .check-item {
-      padding: 6px 10px !important;
-      font-size: 11px !important;
-      border-radius: 6px !important;
-    }
-    .check-dot {
-      width: 6px !important;
-      height: 6px !important;
-      margin-top: 5px !important;
-    }
-
-    /* Spec table — compact */
-    .spec-table {
-      font-size: 11px !important;
-      border-radius: 6px !important;
-    }
-    .spec-table th {
-      padding: 8px 10px !important;
-      font-size: 11px !important;
-    }
-    .spec-table td {
-      padding: 7px 10px !important;
-    }
-    .spec-table .label {
-      width: 70px !important;
-    }
-    .tag {
-      font-size: 9px !important;
-      padding: 1px 5px !important;
-    }
-
-    /* Rule boxes — compact */
-    .rule-box {
-      padding: 8px 12px !important;
-      font-size: 11px !important;
-      border-radius: 6px !important;
-      margin-top: 8px !important;
-    }
-    .rule-icon svg {
-      width: 14px !important;
-      height: 14px !important;
-    }
-
-    /* Emergency flow */
-    .emergency-flow {
-      margin-top: 10px !important;
-    }
-    .em-node {
-      padding: 6px 12px !important;
-      font-size: 11px !important;
-      border-radius: 6px !important;
-    }
-    .em-node svg {
-      width: 10px !important;
-      height: 10px !important;
-    }
-    .em-arrow svg {
-      width: 16px !important;
-      height: 16px !important;
-    }
-
-    /* Footer */
-    .footer {
-      padding: 20px 0 8px !important;
-      font-size: 10px !important;
-    }
-
-    /* Prevent orphans */
-    h1, h2, h3, .step-title {
-      orphans: 3;
-      widows: 3;
-    }
-
-    /* Links: don't show URL in print */
+    .step-header { margin-bottom: 8px !important; }
+    .step-time { font-size: 10px !important; padding: 2px 8px !important; }
+    .step-title { font-size: 14px !important; }
+    .step-desc { font-size: 11px !important; margin-bottom: 10px !important; line-height: 1.5 !important; }
+    .detail-grid { gap: 6px !important; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important; }
+    .detail-item { padding: 6px 10px !important; font-size: 11px !important; border-radius: 6px !important; }
+    .detail-item svg { width: 12px !important; height: 12px !important; }
+    .checklist { gap: 4px !important; }
+    .check-item { padding: 6px 10px !important; font-size: 11px !important; border-radius: 6px !important; }
+    .check-dot { width: 6px !important; height: 6px !important; margin-top: 5px !important; }
+    .spec-table { font-size: 11px !important; border-radius: 6px !important; }
+    .spec-table th { padding: 8px 10px !important; font-size: 11px !important; }
+    .spec-table td { padding: 7px 10px !important; }
+    .spec-table .label { width: 70px !important; }
+    .tag { font-size: 9px !important; padding: 1px 5px !important; }
+    .rule-box { padding: 8px 12px !important; font-size: 11px !important; border-radius: 6px !important; margin-top: 8px !important; }
+    .rule-icon svg { width: 14px !important; height: 14px !important; }
+    .emergency-flow { margin-top: 10px !important; }
+    .em-node { padding: 6px 12px !important; font-size: 11px !important; border-radius: 6px !important; }
+    .em-node svg { width: 10px !important; height: 10px !important; }
+    .em-arrow svg { width: 16px !important; height: 16px !important; }
+    .footer { padding: 20px 0 8px !important; font-size: 10px !important; }
+    h1, h2, h3, .step-title { orphans: 3; widows: 3; }
     a[href]::after { content: none !important; }
   }
 </style>
 </head>
 <body>
 
-<!-- ── Edit Toolbar ── -->
-<div class="edit-toolbar">
-  <button class="btn-edit" id="toggleEdit" onclick="toggleEditMode()">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-    编辑模式
+<!-- ── FAB 悬浮工具球 ── -->
+<div class="fab-overlay" id="fabOverlay" onclick="toggleFab()"></div>
+<div class="fab-wrapper" id="fabWrapper">
+  <button class="fab-main" id="fabMain" onclick="toggleFab()" title="工具菜单">
+    <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <line x1="12" y1="5" x2="12" y2="19"/>
+      <line x1="5" y1="12" x2="19" y2="12"/>
+    </svg>
   </button>
-  <button class="btn-export" onclick="exportPNG()">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-    导出 PNG
-  </button>
-  <button class="btn-print" onclick="printPage()">
-    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-    打印
-  </button>
+  <div class="fab-menu" id="fabMenu">
+    <div class="fab-item">
+      <button class="fab-btn-edit" id="fabEditBtn" onclick="toggleEditMode()" title="编辑模式">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+      <span class="fab-label" id="fabEditLabel">编辑模式</span>
+    </div>
+    <div class="fab-item">
+      <button class="fab-btn-save" onclick="saveContent()" title="保存">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      </button>
+      <span class="fab-label">保存内容</span>
+    </div>
+    <div class="fab-item">
+      <button class="fab-btn-export" onclick="exportPNG()" title="导出PNG">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+      <span class="fab-label">导出 PNG</span>
+    </div>
+    <div class="fab-item">
+      <button class="fab-btn-print" onclick="printPage()" title="打印">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      </button>
+      <span class="fab-label">打印</span>
+    </div>
+  </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <!-- ── Hero ── -->
-<div class="hero">
+<div class="hero" id="page-content">
   <div class="hero-badge">
     <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
     SOP · 标准操作流程
@@ -1229,17 +1178,73 @@
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script>
+  const STORAGE_KEY = 'sop-account-manager-content';
   let isEditing = false;
+  let fabOpen = false;
+
+  /* ══════════════════════════════════════
+     localStorage 持久化保存/恢复
+     ══════════════════════════════════════ */
+
+  // 保存：将 .hero 和 .container 的 innerHTML 序列化到 localStorage
+  function saveContent() {
+    try {
+      const hero = document.querySelector('.hero');
+      const container = document.querySelector('.container');
+      const data = {
+        hero: hero.innerHTML,
+        container: container.innerHTML,
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      showToast('内容已保存，刷新页面后仍会保留');
+    } catch (e) {
+      showToast('保存失败: ' + e.message);
+    }
+  }
+
+  // 恢复：页面加载时从 localStorage 读取并还原
+  function loadContent() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (data.hero) {
+        document.querySelector('.hero').innerHTML = data.hero;
+      }
+      if (data.container) {
+        document.querySelector('.container').innerHTML = data.container;
+      }
+    } catch (e) {
+      console.warn('恢复保存内容失败:', e);
+    }
+  }
+
+  // 页面加载时自动恢复
+  document.addEventListener('DOMContentLoaded', loadContent);
+
+  /* ══════════════════════════════════════
+     悬浮球 FAB 控制
+     ══════════════════════════════════════ */
+  function toggleFab() {
+    fabOpen = !fabOpen;
+    document.getElementById('fabMain').classList.toggle('open', fabOpen);
+    document.getElementById('fabMenu').classList.toggle('show', fabOpen);
+    document.getElementById('fabOverlay').classList.toggle('show', fabOpen);
+  }
+
+  function closeFab() {
+    if (fabOpen) toggleFab();
+  }
 
   /* ── Toggle edit mode ── */
   function toggleEditMode() {
     isEditing = !isEditing;
     document.body.classList.toggle('editing', isEditing);
-    const btn = document.getElementById('toggleEdit');
+    const btn = document.getElementById('fabEditBtn');
+    const label = document.getElementById('fabEditLabel');
     btn.classList.toggle('active', isEditing);
-    btn.innerHTML = isEditing
-      ? '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> 完成编辑'
-      : '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 编辑模式';
+    label.textContent = isEditing ? '完成编辑' : '编辑模式';
 
     // Toggle contenteditable on text elements
     const editables = document.querySelectorAll(
@@ -1255,6 +1260,7 @@
     });
 
     showToast(isEditing ? '已进入编辑模式 — 点击任意文本即可修改' : '已退出编辑模式');
+    closeFab();
   }
 
   /* ── Add row for detail-item / check-item ── */
@@ -1356,13 +1362,14 @@
 
   /* ── Export PNG ── */
   function exportPNG() {
+    closeFab();
     showToast('正在生成图片，请稍候...');
-    // Temporarily hide toolbar
-    const toolbar = document.querySelector('.edit-toolbar');
+    const fab = document.querySelector('.fab-wrapper');
+    const overlay = document.querySelector('.fab-overlay');
     const toast = document.getElementById('toast');
-    toolbar.style.display = 'none';
+    fab.style.display = 'none';
+    overlay.style.display = 'none';
     toast.style.display = 'none';
-    // Remove editing state temporarily
     const wasEditing = isEditing;
     if (wasEditing) {
       document.body.classList.remove('editing');
@@ -1383,16 +1390,17 @@
         link.download = '账号管理员工作手册.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
-        // Restore
-        toolbar.style.display = 'flex';
+        fab.style.display = '';
+        overlay.style.display = '';
         toast.style.display = '';
         if (wasEditing) {
           document.body.classList.add('editing');
-          toggleEditMode(); toggleEditMode(); // re-apply
+          toggleEditMode(); toggleEditMode();
         }
         showToast('图片已导出');
       }).catch(() => {
-        toolbar.style.display = 'flex';
+        fab.style.display = '';
+        overlay.style.display = '';
         toast.style.display = '';
         showToast('导出失败，请重试');
       });
@@ -1401,7 +1409,7 @@
 
   /* ── Print ── */
   function printPage() {
-    // Exit edit mode if active
+    closeFab();
     if (isEditing) { toggleEditMode(); }
     window.print();
   }
