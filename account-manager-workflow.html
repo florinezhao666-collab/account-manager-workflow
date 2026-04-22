@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>素人代发 · 账号管理员工作手册</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #2563EB;
+    --primary-light: #3B82F6;
+    --primary-ultra-light: #EFF6FF;
+    --accent: #F97316;
+    --accent-light: #FFF7ED;
+    --bg: #F8FAFC;
+    --text: #1E293B;
+    --text-muted: #475569;
+    --text-light: #94A3B8;
+    --border: #E2E8F0;
+    --white: #FFFFFF;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --warning: #F59E0B;
+    --warning-light: #FFFBEB;
+    --danger: #EF4444;
+    --danger-light: #FEF2F2;
+    --purple: #8B5CF6;
+    --purple-light: #F5F3FF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Hero Header ── */
+  .hero {
+    background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #3B82F6 100%);
+    padding: 56px 32px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(255,255,255,0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    max-width: 520px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  /* ── Container ── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Overview Cards ── */
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: -32px 0 40px;
+    position: relative;
+    z-index: 2;
+  }
+  .overview-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .overview-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  }
+  .overview-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 20px;
+  }
+  .overview-icon.blue { background: var(--primary-ultra-light); color: var(--primary); }
+  .overview-icon.orange { background: var(--accent-light); color: var(--accent); }
+  .overview-icon.green { background: var(--success-light); color: var(--success); }
+  .overview-card h3 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .overview-card .value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── Section Title ── */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0 24px;
+  }
+  .section-title .line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-title span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* ── Timeline Flow ── */
+  .timeline {
+    position: relative;
+    padding-left: 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 28px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--primary), var(--success), var(--accent));
+    border-radius: 3px;
+  }
+  .step {
+    position: relative;
+    padding-left: 72px;
+    padding-bottom: 36px;
+  }
+  .step:last-child { padding-bottom: 0; }
+
+  .step-number {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
+  .step:nth-child(1) .step-number { background: var(--primary); }
+  .step:nth-child(2) .step-number { background: var(--primary-light); }
+  .step:nth-child(3) .step-number { background: var(--purple); box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3); }
+  .step:nth-child(4) .step-number { background: var(--success); box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3); }
+  .step:nth-child(5) .step-number { background: var(--danger); box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3); }
+
+  .step-card {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .step-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .step-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .time-morning { background: var(--primary-ultra-light); color: var(--primary); }
+  .time-all { background: var(--purple-light); color: var(--purple); }
+  .time-evening { background: var(--success-light); color: var(--success); }
+  .time-anytime { background: var(--warning-light); color: var(--warning); }
+  .time-emergency { background: var(--danger-light); color: var(--danger); }
+
+  .step-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .step-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── Detail Items ── */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .detail-item svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── Checklist style ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .check-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .dot-blue { background: var(--primary); }
+  .dot-green { background: var(--success); }
+  .dot-orange { background: var(--accent); }
+  .dot-purple { background: var(--purple); }
+  .dot-red { background: var(--danger); }
+
+  /* ── Key Rule Box ── */
+  .rule-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .rule-box.warn {
+    background: var(--warning-light);
+    border: 1px solid #FDE68A;
+    color: #92400E;
+  }
+  .rule-box.info {
+    background: var(--primary-ultra-light);
+    border: 1px solid #BFDBFE;
+    color: #1E40AF;
+  }
+  .rule-box.danger {
+    background: var(--danger-light);
+    border: 1px solid #FECACA;
+    color: #991B1B;
+  }
+  .rule-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  /* ── Emergency Flow ── */
+  .emergency-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .em-node {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .em-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    color: var(--text-light);
+  }
+  .em-arrow svg { width: 20px; height: 20px; }
+  .em-trigger { background: var(--danger-light); color: #991B1B; border: 1px solid #FECACA; }
+  .em-action { background: var(--warning-light); color: #92400E; border: 1px solid #FDE68A; }
+  .em-result { background: var(--success-light); color: #065F46; border: 1px solid #A7F3D0; }
+
+  /* ── Post Spec Table ── */
+  .spec-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .spec-table th {
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .spec-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+  .spec-table tr:last-child td { border-bottom: none; }
+  .spec-table tbody tr:hover { background: var(--primary-ultra-light); }
+  .spec-table .label {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    width: 100px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .tag-required { background: var(--danger-light); color: #DC2626; }
+  .tag-important { background: var(--warning-light); color: #D97706; }
+  .tag-tip { background: var(--success-light); color: #059669; }
+
+  /* ── Daily Timeline ── */
+  .daily-bar {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 52px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+  }
+  .daily-seg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 2px;
+    padding: 0 8px;
+  }
+  .daily-seg .seg-label {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+  .seg-plan { background: #DBEAFE; color: #1E40AF; flex: 2; }
+  .seg-post { background: #BBF7D0; color: #065F46; flex: 5; }
+  .seg-check { background: #FDE68A; color: #92400E; flex: 2; }
+  .seg-report { background: #C4B5FD; color: #4C1D95; flex: 1.5; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 40px 24px 32px;
+    font-size: 12px;
+    color: var(--text-light);
+  }
+  .footer strong { color: var(--text-muted); }
+
+  /* ── Edit Mode ── */
+  .edit-toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1000;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .edit-toolbar button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .btn-edit {
+    background: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--border) !important;
+  }
+  .btn-edit:hover { background: var(--primary-ultra-light); }
+  .btn-edit.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary) !important;
+  }
+  .btn-export {
+    background: var(--white);
+    color: var(--text-muted);
+    border: 1px solid var(--border) !important;
+  }
+  .btn-export:hover { background: var(--bg); }
+
+  /* Editable highlight */
+  body.editing [contenteditable="true"] {
+    outline: 2px dashed rgba(37, 99, 235, 0.3);
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-color 0.2s;
+    min-height: 1em;
+  }
+  body.editing [contenteditable="true"]:hover {
+    outline-color: rgba(37, 99, 235, 0.5);
+  }
+  body.editing [contenteditable="true"]:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    background: rgba(37, 99, 235, 0.03);
+  }
+
+  /* Row action buttons */
+  .row-actions {
+    display: none;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  body.editing .row-actions { display: inline-flex; }
+  .row-actions button {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    padding: 0;
+    box-shadow: none;
+  }
+  .row-actions .btn-add { color: var(--success); }
+  .row-actions .btn-add:hover { background: var(--success-light); border-color: var(--success); }
+  .row-actions .btn-del { color: var(--danger); }
+  .row-actions .btn-del:hover { background: var(--danger-light); border-color: var(--danger); }
+
+  .row-actions-col { width: 0; padding: 0; overflow: hidden; }
+  body.editing .row-actions-col { width: 56px; }
+  body.editing .spec-table td:last-child { padding: 8px 4px; }
+
+  /* Add step button */
+  .add-step-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 14px;
+    margin-top: 24px;
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    background: var(--white);
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  body.editing .add-step-btn { display: flex; }
+  .add-step-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-ultra-light);
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-family: inherit;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Print button ── */
+  .btn-print {
+    background: var(--white);
+    color: var(--text-muted);
+    border: 1px solid var(--border) !important;
+  }
+  .btn-print:hover { background: var(--bg); }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .overview { grid-template-columns: 1fr; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 24px; }
+    .step { padding-left: 60px; }
+    .timeline::before { left: 22px; }
+    .step-number { left: 4px; width: 36px; height: 36px; font-size: 14px; }
+    .emergency-flow { flex-direction: column; align-items: stretch; }
+    .em-arrow { transform: rotate(90deg); justify-content: center; padding: 4px 0; }
+    .daily-bar { flex-direction: column; height: auto; }
+    .daily-seg { padding: 8px; flex-direction: row; gap: 8px; }
+  }
+
+  /* ══════════════════════════════════════════
+     PRINT STYLES — A4 optimized
+     ══════════════════════════════════════════ */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 12mm 10mm;
+  }
+
+  @media print {
+    /* Force color printing */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    /* Reset body for print */
+    html, body {
+      width: 210mm;
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #fff !important;
+      font-size: 11px !important;
+      line-height: 1.5 !important;
+      -webkit-font-smoothing: subpixel-antialiased;
+    }
+
+    /* Hide interactive elements */
+    .edit-toolbar,
+    .toast,
+    .add-step-btn,
+    .row-actions,
+    .row-actions-col {
+      display: none !important;
+    }
+
+    /* Remove hover/shadow effects */
+    .overview-card,
+    .step-card {
+      box-shadow: none !important;
+      transform: none !important;
+    }
+    .step-card:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .overview-card:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Hero — compact for print, keep color */
+    .hero {
+      padding: 28px 20px 24px !important;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #3B82F6 100%) !important;
+    }
+    .hero::before { display: none !important; }
+    .hero h1 {
+      font-size: 22px !important;
+      margin-bottom: 6px !important;
+    }
+    .hero p {
+      font-size: 12px !important;
+    }
+    .hero-badge {
+      font-size: 11px !important;
+      padding: 4px 12px !important;
+      margin-bottom: 12px !important;
+    }
+
+    /* Container — full width for A4 */
+    .container {
+      max-width: 100% !important;
+      padding: 0 !important;
+    }
+
+    /* Overview cards — tighter */
+    .overview {
+      margin: -18px 0 20px !important;
+      gap: 10px !important;
+    }
+    .overview-card {
+      padding: 14px !important;
+      border-radius: 8px !important;
+    }
+    .overview-icon {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 8px !important;
+      margin-bottom: 6px !important;
+    }
+    .overview-icon svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+    .overview-card h3 {
+      font-size: 10px !important;
+      margin-bottom: 2px !important;
+    }
+    .overview-card .value {
+      font-size: 16px !important;
+    }
+
+    /* Section titles — tighter */
+    .section-title {
+      margin: 20px 0 12px !important;
+    }
+    .section-title span {
+      font-size: 11px !important;
+    }
+
+    /* Daily bar — compact */
+    .daily-bar {
+      height: 40px !important;
+      margin-top: 8px !important;
+      border-radius: 8px !important;
+    }
+    .daily-seg {
+      font-size: 9px !important;
+    }
+    .daily-seg .seg-label {
+      font-size: 8px !important;
+    }
+
+    /* Timeline — prevent breaks */
+    .timeline::before {
+      width: 2px !important;
+      left: 20px !important;
+    }
+    .step {
+      padding-left: 52px !important;
+      padding-bottom: 16px !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .step-number {
+      left: 4px !important;
+      width: 32px !important;
+      height: 32px !important;
+      font-size: 13px !important;
+    }
+    .step-card {
+      padding: 16px 18px !important;
+      border-radius: 8px !important;
+      border: 1px solid #D1D5DB !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+    }
+    .step-header {
+      margin-bottom: 8px !important;
+    }
+    .step-time {
+      font-size: 10px !important;
+      padding: 2px 8px !important;
+    }
+    .step-title {
+      font-size: 14px !important;
+    }
+    .step-desc {
+      font-size: 11px !important;
+      margin-bottom: 10px !important;
+      line-height: 1.5 !important;
+    }
+
+    /* Detail items & checklist — compact */
+    .detail-grid {
+      gap: 6px !important;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    }
+    .detail-item {
+      padding: 6px 10px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+    .detail-item svg {
+      width: 12px !important;
+      height: 12px !important;
+    }
+    .checklist {
+      gap: 4px !important;
+    }
+    .check-item {
+      padding: 6px 10px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+    .check-dot {
+      width: 6px !important;
+      height: 6px !important;
+      margin-top: 5px !important;
+    }
+
+    /* Spec table — compact */
+    .spec-table {
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+    .spec-table th {
+      padding: 8px 10px !important;
+      font-size: 11px !important;
+    }
+    .spec-table td {
+      padding: 7px 10px !important;
+    }
+    .spec-table .label {
+      width: 70px !important;
+    }
+    .tag {
+      font-size: 9px !important;
+      padding: 1px 5px !important;
+    }
+
+    /* Rule boxes — compact */
+    .rule-box {
+      padding: 8px 12px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+      margin-top: 8px !important;
+    }
+    .rule-icon svg {
+      width: 14px !important;
+      height: 14px !important;
+    }
+
+    /* Emergency flow */
+    .emergency-flow {
+      margin-top: 10px !important;
+    }
+    .em-node {
+      padding: 6px 12px !important;
+      font-size: 11px !important;
+      border-radius: 6px !important;
+    }
+    .em-node svg {
+      width: 10px !important;
+      height: 10px !important;
+    }
+    .em-arrow svg {
+      width: 16px !important;
+      height: 16px !important;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 20px 0 8px !important;
+      font-size: 10px !important;
+    }
+
+    /* Prevent orphans */
+    h1, h2, h3, .step-title {
+      orphans: 3;
+      widows: 3;
+    }
+
+    /* Links: don't show URL in print */
+    a[href]::after { content: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Edit Toolbar ── -->
+<div class="edit-toolbar">
+  <button class="btn-edit" id="toggleEdit" onclick="toggleEditMode()">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    编辑模式
+  </button>
+  <button class="btn-export" onclick="exportPNG()">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    导出 PNG
+  </button>
+  <button class="btn-print" onclick="printPage()">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    打印
+  </button>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- ── Hero ── -->
+<div class="hero">
+  <div class="hero-badge">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+    SOP · 标准操作流程
+  </div>
+  <h1>素人代发 · 账号管理员工作手册</h1>
+  <p>从排期规划到发布审核的全流程管理规范，确保每日内容按质按量准时上线</p>
+</div>
+
+<div class="container">
+
+  <!-- ── Overview ── -->
+  <div class="overview">
+    <div class="overview-card">
+      <div class="overview-icon blue">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3>每日截止时间</h3>
+      <div class="value">19:00</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-icon orange">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h16M10 4v16"/></svg>
+      </div>
+      <h3>发帖间隔要求</h3>
+      <div class="value">&ge; 1 小时</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-icon green">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <h3>核心原则</h3>
+      <div class="value">按量 · 合规</div>
+    </div>
+  </div>
+
+  <!-- ── Daily Timeline Bar ── -->
+  <div class="section-title">
+    <div class="line"></div>
+    <span>每日时间线</span>
+    <div class="line"></div>
+  </div>
+  <div class="daily-bar">
+    <div class="daily-seg seg-plan">
+      <span>09:00 – 10:00</span>
+      <span class="seg-label">排期 & 任务确认</span>
+    </div>
+    <div class="daily-seg seg-post">
+      <span>10:00 – 18:00</span>
+      <span class="seg-label">分时段错峰发布</span>
+    </div>
+    <div class="daily-seg seg-check">
+      <span>18:00 – 19:00</span>
+      <span class="seg-label">审核 & 查漏补缺</span>
+    </div>
+    <div class="daily-seg seg-report">
+      <span>19:00</span>
+      <span class="seg-label">完成确认</span>
+    </div>
+  </div>
+
+  <!-- ── Workflow Steps ── -->
+  <div class="section-title">
+    <div class="line"></div>
+    <span>工作流程 · 五步闭环</span>
+    <div class="line"></div>
+  </div>
+
+  <div class="timeline">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-morning">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            &nbsp;每日早间
+          </span>
+          <span class="step-title">确认发帖任务量</span>
+        </div>
+        <p class="step-desc">
+          梳理所管理的全部账号，明确每个账号当日需发布的帖子数量，做到心中有数、任务到人。
+        </p>
+        <div class="detail-grid" data-list="detail">
+          <div class="detail-item">
+            <svg width="16" height="16" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><path d="M9 12h6M9 16h6"/></svg>
+            <span>盘点当日所有待管理账号</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="detail-item">
+            <svg width="16" height="16" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M6 20V4M18 20v-6"/></svg>
+            <span>确认每个账号的发帖配额</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="detail-item">
+            <svg width="16" height="16" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+            <span>分配任务并记录到排期表</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-morning">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            &nbsp;内容准备阶段
+          </span>
+          <span class="step-title">执行发帖规范</span>
+        </div>
+        <p class="step-desc">
+          每条帖子须严格按照以下六大要素规范发布，确保内容质量统一、引流效果最大化。
+        </p>
+        <table class="spec-table" data-list="table">
+          <thead>
+            <tr>
+              <th>要素</th>
+              <th>规范要求</th>
+              <th style="width:56px" class="row-actions-col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="label">标题</td>
+              <td>吸引眼球、包含关键词，符合平台推荐逻辑 <span class="tag tag-required">必填</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+            <tr>
+              <td class="label">素材</td>
+              <td>使用指定图片/视频素材，保证清晰度与调性统一 <span class="tag tag-required">必填</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+            <tr>
+              <td class="label">正文</td>
+              <td>不要一次性放完所有内容，<strong>预留钩子</strong>引导用户互动和私信 <span class="tag tag-important">关键</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+            <tr>
+              <td class="label">标签</td>
+              <td>添加与内容相关的热门标签，提升曝光率 <span class="tag tag-required">必填</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+            <tr>
+              <td class="label">引流群</td>
+              <td>按要求挂载引流群入口，确保路径可用 <span class="tag tag-important">关键</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+            <tr>
+              <td class="label">评论区置顶</td>
+              <td>发布后立即在评论区置顶引导语，强化转化 <span class="tag tag-tip">建议</span></td>
+              <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rule-box warn">
+          <span class="rule-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+          </span>
+          正文切忌"全盘托出"——预留钩子（如"评论区看详情""私信获取完整方案"）才能有效提升互动与引流转化率
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-all">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            &nbsp;全天执行
+          </span>
+          <span class="step-title">错峰发布排期</span>
+        </div>
+        <p class="step-desc">
+          与各账号沟通确认发帖时间，合理安排发布节奏，避免集中发帖导致限流。
+        </p>
+        <div class="checklist" data-list="check">
+          <div class="check-item">
+            <div class="check-dot dot-purple"></div>
+            <span>提前沟通每个账号的发帖时间段，确保<strong>不同账号之间错峰发布</strong></span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="check-item">
+            <div class="check-dot dot-purple"></div>
+            <span>同一账号发布多条帖子时，<strong>相邻帖子间隔须 &ge; 1 小时</strong></span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="check-item">
+            <div class="check-dot dot-purple"></div>
+            <span>合理利用平台高活跃时段（午间 12:00–13:00、晚间 19:00–21:00）</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+        </div>
+        <div class="rule-box info">
+          <span class="rule-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </span>
+          间隔不足 1 小时可能触发平台限流机制，严重时导致账号降权
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-evening">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            &nbsp;19:00 前
+          </span>
+          <span class="step-title">发布审核 & 质检</span>
+        </div>
+        <p class="step-desc">
+          每天 19:00 前必须完成所有账号的发帖审核，逐条检查是否符合规范要求。
+        </p>
+        <div class="checklist" data-list="check">
+          <div class="check-item">
+            <div class="check-dot dot-green"></div>
+            <span>确认所有账号已按照当日配额完成发帖</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="check-item">
+            <div class="check-dot dot-green"></div>
+            <span>逐条核查：标题是否合规、素材是否正确、正文是否保留钩子</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="check-item">
+            <div class="check-dot dot-green"></div>
+            <span>检查标签是否齐全、引流群入口是否有效</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+          <div class="check-item">
+            <div class="check-dot dot-green"></div>
+            <span>确认评论区置顶已发布且内容无误</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+        </div>
+        <div class="rule-box warn">
+          <span class="rule-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </span>
+          <strong>19:00 是硬性截止时间</strong>——发现问题立即通知修正，不能拖到次日处理
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <div class="step-number">5</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-emergency">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+            &nbsp;异常时触发
+          </span>
+          <span class="step-title">应急预案</span>
+        </div>
+        <p class="step-desc">
+          当出现账号失联、账号异常、或素人因特殊情况未能完成发帖时，管理员须立即启动应急方案。
+        </p>
+        <div class="emergency-flow">
+          <div class="em-node em-trigger">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+            &nbsp;发现异常
+          </div>
+          <div class="em-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+          <div class="em-node em-action">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            &nbsp;寻找活跃账号
+          </div>
+          <div class="em-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+          <div class="em-node em-action">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            &nbsp;补齐缺失帖量
+          </div>
+          <div class="em-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></div>
+          <div class="em-node em-result">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="vertical-align:-2px"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            &nbsp;确保当日达标
+          </div>
+        </div>
+        <div class="rule-box danger">
+          <span class="rule-icon">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg>
+          </span>
+          无论何种原因，当日发帖总量不可缺额——管理员对最终结果负责
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="add-step-btn" onclick="addStep()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    添加新步骤
+  </button>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <strong>素人代发 · 账号管理员 SOP</strong><br>
+    保持流程执行一致性，确保每日内容稳定输出
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+  let isEditing = false;
+
+  /* ── Toggle edit mode ── */
+  function toggleEditMode() {
+    isEditing = !isEditing;
+    document.body.classList.toggle('editing', isEditing);
+    const btn = document.getElementById('toggleEdit');
+    btn.classList.toggle('active', isEditing);
+    btn.innerHTML = isEditing
+      ? '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> 完成编辑'
+      : '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 编辑模式';
+
+    // Toggle contenteditable on text elements
+    const editables = document.querySelectorAll(
+      '.hero h1, .hero p, .hero-badge, .overview-card h3, .overview-card .value, ' +
+      '.section-title span, .step-title, .step-desc, .step-time, ' +
+      '.detail-item > span, .check-item > span, .rule-box, ' +
+      '.spec-table td, .em-node, .daily-seg > span, .daily-seg .seg-label, .footer'
+    );
+    editables.forEach(el => {
+      if (el.classList.contains('row-actions')) return;
+      el.contentEditable = isEditing ? 'true' : 'false';
+      if (!isEditing) el.removeAttribute('contenteditable');
+    });
+
+    showToast(isEditing ? '已进入编辑模式 — 点击任意文本即可修改' : '已退出编辑模式');
+  }
+
+  /* ── Add row for detail-item / check-item ── */
+  function addRow(btnEl, type) {
+    const parent = btnEl.closest('[data-list]');
+    const currentItem = btnEl.closest('.detail-item, .check-item');
+    let newItem;
+    if (type === 'detail') {
+      newItem = document.createElement('div');
+      newItem.className = 'detail-item';
+      newItem.innerHTML = `
+        <svg width="16" height="16" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+        <span contenteditable="true">点击编辑内容</span>
+        <span class="row-actions">
+          <button class="btn-add" title="添加一行" onclick="addRow(this,'detail')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </span>`;
+    } else {
+      const dotColor = currentItem.querySelector('.check-dot').className.split(' ').find(c => c.startsWith('dot-')) || 'dot-blue';
+      newItem = document.createElement('div');
+      newItem.className = 'check-item';
+      newItem.innerHTML = `
+        <div class="check-dot ${dotColor}"></div>
+        <span contenteditable="true">点击编辑内容</span>
+        <span class="row-actions">
+          <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        </span>`;
+    }
+    currentItem.after(newItem);
+    newItem.querySelector('span[contenteditable]').focus();
+  }
+
+  function delRow(btnEl) {
+    const item = btnEl.closest('.detail-item, .check-item');
+    const parent = item.parentElement;
+    if (parent.children.length <= 1) { showToast('至少保留一行'); return; }
+    item.remove();
+  }
+
+  /* ── Add / delete table rows ── */
+  function addTableRow(btnEl) {
+    const tr = btnEl.closest('tr');
+    const newTr = document.createElement('tr');
+    newTr.innerHTML = `
+      <td class="label" contenteditable="true">新要素</td>
+      <td contenteditable="true">点击编辑规范要求</td>
+      <td><span class="row-actions"><button class="btn-add" title="添加一行" onclick="addTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button><button class="btn-del" title="删除此行" onclick="delTableRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button></span></td>`;
+    tr.after(newTr);
+    newTr.querySelector('td.label').focus();
+  }
+
+  function delTableRow(btnEl) {
+    const tr = btnEl.closest('tr');
+    const tbody = tr.parentElement;
+    if (tbody.children.length <= 1) { showToast('至少保留一行'); return; }
+    tr.remove();
+  }
+
+  /* ── Add new step ── */
+  function addStep() {
+    const timeline = document.querySelector('.timeline');
+    const steps = timeline.querySelectorAll('.step');
+    const num = steps.length + 1;
+    const colors = ['var(--primary)', 'var(--primary-light)', 'var(--purple)', 'var(--success)', 'var(--danger)', 'var(--accent)', '#6366F1'];
+    const color = colors[(num - 1) % colors.length];
+
+    const step = document.createElement('div');
+    step.className = 'step';
+    step.innerHTML = `
+      <div class="step-number" style="background:${color};box-shadow:0 2px 8px rgba(0,0,0,0.2)">${num}</div>
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-time time-morning" contenteditable="true">时间标签</span>
+          <span class="step-title" contenteditable="true">新步骤标题</span>
+        </div>
+        <p class="step-desc" contenteditable="true">点击此处编辑步骤描述</p>
+        <div class="checklist" data-list="check">
+          <div class="check-item">
+            <div class="check-dot dot-blue"></div>
+            <span contenteditable="true">点击编辑内容</span>
+            <span class="row-actions">
+              <button class="btn-add" title="添加一行" onclick="addRow(this,'check')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <button class="btn-del" title="删除此行" onclick="delRow(this)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </span>
+          </div>
+        </div>
+      </div>`;
+    timeline.appendChild(step);
+    step.querySelector('.step-title').focus();
+    renumberSteps();
+  }
+
+  function renumberSteps() {
+    document.querySelectorAll('.timeline .step').forEach((s, i) => {
+      s.querySelector('.step-number').textContent = i + 1;
+    });
+  }
+
+  /* ── Export PNG ── */
+  function exportPNG() {
+    showToast('正在生成图片，请稍候...');
+    // Temporarily hide toolbar
+    const toolbar = document.querySelector('.edit-toolbar');
+    const toast = document.getElementById('toast');
+    toolbar.style.display = 'none';
+    toast.style.display = 'none';
+    // Remove editing state temporarily
+    const wasEditing = isEditing;
+    if (wasEditing) {
+      document.body.classList.remove('editing');
+      document.querySelectorAll('[contenteditable="true"]').forEach(el => el.removeAttribute('contenteditable'));
+    }
+
+    setTimeout(() => {
+      html2canvas(document.body, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#F8FAFC',
+        width: document.body.scrollWidth,
+        height: document.body.scrollHeight,
+        windowWidth: document.body.scrollWidth,
+        windowHeight: document.body.scrollHeight
+      }).then(canvas => {
+        const link = document.createElement('a');
+        link.download = '账号管理员工作手册.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        // Restore
+        toolbar.style.display = 'flex';
+        toast.style.display = '';
+        if (wasEditing) {
+          document.body.classList.add('editing');
+          toggleEditMode(); toggleEditMode(); // re-apply
+        }
+        showToast('图片已导出');
+      }).catch(() => {
+        toolbar.style.display = 'flex';
+        toast.style.display = '';
+        showToast('导出失败，请重试');
+      });
+    }, 200);
+  }
+
+  /* ── Print ── */
+  function printPage() {
+    // Exit edit mode if active
+    if (isEditing) { toggleEditMode(); }
+    window.print();
+  }
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+</script>
+
+</body>
+</html>
